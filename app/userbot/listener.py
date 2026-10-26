@@ -9,7 +9,7 @@ from app.services.pipeline import Incoming, ingest
 
 log = logging.getLogger(__name__)
 
-OnSaved = Callable[[int], Awaitable[None]]
+OnSaved = Callable[[int, Sequence], Awaitable[None]]
 
 
 def media_key(messages: Sequence) -> str | None:
@@ -40,7 +40,7 @@ def register(client: TelegramClient, on_saved: OnSaved) -> None:
         )
         post_id = await ingest(incoming)
         if post_id is not None:
-            await on_saved(post_id)
+            await on_saved(post_id, messages)
 
     @client.on(events.NewMessage(chats=chats, func=lambda e: e.message.grouped_id is None))
     async def on_single(event: events.NewMessage.Event) -> None:

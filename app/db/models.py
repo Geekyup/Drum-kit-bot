@@ -27,6 +27,7 @@ class Post(Base):
     original_text: Mapped[str] = mapped_column(Text, default="")
     text_hash: Mapped[str | None] = mapped_column(String(64), index=True)
     file_hash: Mapped[str | None] = mapped_column(String(128), index=True)
+    media: Mapped[list | None] = mapped_column(JSON)
     draft_text: Mapped[str] = mapped_column(Text, default="")
     status: Mapped[str] = mapped_column(String(16), default=PostStatus.pending.value, index=True)
     bot_message_id: Mapped[int | None] = mapped_column(BigInteger)
